@@ -1,24 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Form from  "./Components/Form";
+import List from "./Components/List";
+import "./App.css"
 
 function App() {
+
+  const [todos, setTodos] = useState([])
+
+  const onSubmitTodo = (todoText) => {
+    const todo = {
+        id: Math.floor(Math.random() * 1000), //replace this with 3rd party random generator later
+        text: todoText,
+        completed:false
+      }
+      setTodos([...todos, todo])  
+                                  
+  }
+  
+  const deleteTodoHandler = (todo) => {
+    const updatedTodos = todos.filter((item) => {
+        return item.id !== todo.id
+      })
+      
+      setTodos(updatedTodos);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div className="App">
+        <div className="ui container">
+          <div className="title">
+              <i className="clipboard outline icon"></i>
+              To-Do List    
+          </div>
+          <div>
+            <Form onSubmitTodo={onSubmitTodo} />
+            <List todos={todos} 
+                deleteTodoHandler={deleteTodoHandler}
+            />
+          </div> 
+        </div>
+      </div>
   );
 }
 
